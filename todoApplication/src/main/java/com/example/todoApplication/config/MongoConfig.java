@@ -12,6 +12,6 @@ public class MongoConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(MongoClients.create("mongodb+srv://rainishu111:Nishu4044054@cluster0.mongodb.net/todo_db?retryWrites=true&w=majority"), "todo_db");
+        return new MongoTemplate(MongoClients.create("mongodb+srv://rainishu111:Nishu4044054@cluster0.23ebv.mongodb.net/todo_db?retryWrites=true&w=majority&appName=Cluster0"), "todo_db");
     }
 }
