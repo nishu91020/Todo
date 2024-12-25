@@ -12,7 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    String name;
+    String id;
+    String username;
     String password;
     Task[] tasks;
 }
