@@ -6,9 +6,9 @@ import com.example.todoApplication.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
@@ -17,13 +17,18 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @GetMapping("/test")
+    private ResponseEntity<String> test(){
+        return new ResponseEntity<>("success",HttpStatus.OK);
+    }
     @PostMapping("/signup")
-    private ResponseEntity<String> signupUser(User user){
+    private ResponseEntity<String> signupUser(@RequestBody User user){
+        System.out.println("Signing up user!!");
         return new ResponseEntity<>(authService.signup(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    private ResponseEntity<String> loginUser(User user){
+    private ResponseEntity<String> loginUser(@RequestBody User user){
         return new ResponseEntity<>(authService.validateUser(user.getUsername(), user.getPassword()),HttpStatus.FOUND);
     }
 }

@@ -23,10 +23,10 @@ public class SecurityConfigTodo {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/auth/signup", "/auth/login"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/signup", "/auth/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/signup", "/auth/login", "/auth/test").permitAll() // Allow access to signup and login
+                        .anyRequest().authenticated() // Authenticate other requests
                 );
         return httpSecurity.build();
     }
