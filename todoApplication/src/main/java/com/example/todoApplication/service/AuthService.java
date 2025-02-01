@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,7 +40,6 @@ public class AuthService {
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setId(randomUUID.toString());
-        newUser.setTasks(new Task[] {});
         authRepository.save(newUser);
         return "User registered successfully!";
     }

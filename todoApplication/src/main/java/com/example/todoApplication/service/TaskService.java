@@ -1,8 +1,13 @@
 package com.example.todoApplication.service;
 
 import com.example.todoApplication.model.Task;
+import com.example.todoApplication.model.User;
+import com.example.todoApplication.repository.AuthRepository;
 import com.example.todoApplication.repository.TaskRepository;
+import com.example.todoApplication.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +19,23 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    public List<Task> getAllTasks(String username) {
+        return taskRepository.findByUsername(username);
     }
 
     public Task getTaskById(String id) {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public String createTask(Task task, String token) {
+        taskRepository.save(task);
+        return "Task Created successfully";
     }
 
     public Task updateTask(String id, Task updatedTask) {
@@ -39,7 +51,9 @@ public class TaskService {
         return null;
     }
 
-    public void deleteTask(String id) {
+    public ResponseEntity<Void> deleteTask(String id, String token) {
+
         taskRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

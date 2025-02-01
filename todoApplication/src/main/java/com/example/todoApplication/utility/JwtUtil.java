@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -15,10 +16,13 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     private Key getSigningKey() {
-        // Create a secure key using Keys.secretKeyFor(SignatureAlgorithm.HS256)
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
+
     public String generateToken(String username) {
+        Key geneartionKey = getSigningKey();
+        System.out.println("geneartionKey: " + geneartionKey);
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
@@ -28,23 +32,41 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        Key extractionKey = getSigningKey();
+        System.out.println("extractionKey: " + extractionKey);
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (JwtException e) {
+            // Log the exception and return null or handle it as needed
+            System.err.println("Invalid JWT token: " + e.getMessage());
+            return null;
+        }
     }
 
     public boolean isTokenValid(String token, String username) {
-        return username.equals(extractUsername(token)) && !isTokenExpired(token);
+        boolean isValid = username.equals(extractUsername(token)) && !isTokenExpired(token);
+        System.out.println("isTokenValid: " + isValid);
+        return isValid;
     }
 
     private boolean isTokenExpired(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration()
-                .before(new Date());
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration()
+                    .before(new Date());
+        } catch (JwtException e) {
+            // Log the exception and return true or handle it as needed
+            System.err.println("Invalid JWT token: " + e.getMessage());
+            return true;
+        }
     }
 }

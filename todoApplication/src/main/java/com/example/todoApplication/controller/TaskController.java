@@ -2,11 +2,13 @@ package com.example.todoApplication.controller;
 
 import com.example.todoApplication.model.Task;
 import com.example.todoApplication.service.TaskService;
+import com.example.todoApplication.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,27 +18,53 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
+    public ResponseEntity<List<Task>> getAllTasksForUser(@RequestHeader String token) {
+        String username = jwtUtil.extractUsername(token);
+
+        if(!jwtUtil.isTokenValid(token, username)){
+            return new ResponseEntity<>(new ArrayList<Task>() {}, HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(taskService.getAllTasks(username), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable String id) {
+    public ResponseEntity<Task> getTaskById(@PathVariable String id, @RequestHeader String token) {
+
         Task task = taskService.getTaskById(id);
         if (task != null) {
-            return new ResponseEntity<>(task, HttpStatus.OK);
+            if(jwtUtil.isTokenValid(token, task.getUsername()))
+            {
+                return new ResponseEntity<>(task, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return new ResponseEntity<>(taskService.createTask(task), HttpStatus.CREATED);
+    public ResponseEntity<String> createTask(@RequestBody Task task, @RequestHeader String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        if(jwtUtil.isTokenValid(token, task.getUsername()))
+        {
+            return new ResponseEntity<>(taskService.createTask(task, token), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task task) {
+    public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task task, @RequestHeader String token) {
+        if(!jwtUtil.isTokenValid(token, task.getUsername()))
+        {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         Task updatedTask = taskService.updateTask(id, task);
         if (updatedTask != null) {
             return new ResponseEntity<>(updatedTask, HttpStatus.OK);
@@ -45,8 +73,12 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable String id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<Void> deleteTask(@PathVariable String id, @RequestHeader String token) {
+        if(!jwtUtil.isTokenValid(token, jwtUtil.extractUsername(token)))
+        {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        taskService.deleteTask(id, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -29,6 +29,9 @@ public class Task {
     @Setter
     @Getter
     private boolean isCompleted;
+    @Setter
+    @Getter
+    private String username;
 
     public Task(String name, String description, Date dueDate, boolean isCompleted) {
         this.name = name;

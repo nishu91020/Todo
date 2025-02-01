@@ -17,10 +17,6 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
-    @GetMapping("/test")
-    private ResponseEntity<String> test(){
-        return new ResponseEntity<>("success",HttpStatus.OK);
-    }
     @PostMapping("/signup")
     private ResponseEntity<String> signupUser(@RequestBody User user){
         System.out.println("Signing up user!!");
