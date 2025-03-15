@@ -23,9 +23,11 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasksForUser(@RequestHeader String token) {
-        String username = jwtUtil.extractUsername(token);
+        String jwtToken = token.replace("Bearer ","");
+        String username = jwtUtil.extractUsername(jwtToken);
 
-        if(!jwtUtil.isTokenValid(token, username)){
+        // TODO: update logic to check the username and validity in one go
+        if(!jwtUtil.isTokenValid(jwtToken, username)){
             return new ResponseEntity<>(new ArrayList<Task>() {}, HttpStatus.UNAUTHORIZED);
         }
 
