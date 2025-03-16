@@ -51,7 +51,7 @@ public class TaskService {
         return null;
     }
 
-    public ResponseEntity<Void> deleteTask(String id, String token) {
+    public ResponseEntity<Void> deleteTask(String id) {
 
         taskRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.CREATED);

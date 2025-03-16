@@ -63,7 +63,8 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task task, @RequestHeader String token) {
-        if(!jwtUtil.isTokenValid(token, task.getUsername()))
+        String jwtToken = token.replace("Bearer ","");
+        if(!jwtUtil.isTokenValid(jwtToken, task.getUsername()))
         {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -76,11 +77,12 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable String id, @RequestHeader String token) {
-        if(!jwtUtil.isTokenValid(token, jwtUtil.extractUsername(token)))
+        String jwtToken = token.replace("Bearer ","");
+        if(!jwtUtil.isTokenValid(jwtToken, jwtUtil.extractUsername(jwtToken)))
         {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        taskService.deleteTask(id, token);
+        taskService.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
