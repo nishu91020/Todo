@@ -28,16 +28,16 @@ public class Task {
     private Date dueDate;
     @Setter
     @Getter
-    private boolean isCompleted;
+    private boolean completed;
     @Setter
     @Getter
     private String username;
 
-    public Task(String name, String description, Date dueDate, boolean isCompleted) {
+    public Task(String name, String description, Date dueDate, boolean completed) {
         this.name = name;
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.dueDate = dueDate;
-        this.isCompleted = isCompleted;
+        this.completed = completed;
     }
 }

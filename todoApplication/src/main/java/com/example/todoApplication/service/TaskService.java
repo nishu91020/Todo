@@ -1,8 +1,6 @@
 package com.example.todoApplication.service;
 
 import com.example.todoApplication.model.Task;
-import com.example.todoApplication.model.User;
-import com.example.todoApplication.repository.AuthRepository;
 import com.example.todoApplication.repository.TaskRepository;
 import com.example.todoApplication.utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

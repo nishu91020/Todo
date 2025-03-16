@@ -64,6 +64,9 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable String id, @RequestBody Task task, @RequestHeader String token) {
         String jwtToken = token.replace("Bearer ","");
+        System.out.println(jwtToken);
+        System.out.println(task.getUsername());
+        System.out.println("task to updated" +task.isCompleted());
         if(!jwtUtil.isTokenValid(jwtToken, task.getUsername()))
         {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
