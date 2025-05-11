@@ -1,0 +1,41 @@
+{
+  "resource": "/{proxy+}",
+  "path": "/example/path",
+  "httpMethod": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "queryStringParameters": {
+    "param1": "value1"
+  },
+  "pathParameters": {
+    "proxy": "example/path"
+  },
+  "stageVariables": {
+    "stageVarName": "stageVarValue"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "resourceId",
+    "stage": "prod",
+    "requestId": "requestId",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "resourcePath": "/{proxy+}",
+    "httpMethod": "GET",
+    "apiId": "apiId"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

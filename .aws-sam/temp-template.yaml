@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 128
+      Handler: helloworld.LambdaHandler
+      CodeUri: C:\Users\Lenovo\Desktop\todoApplication\todoApplication
+      Runtime: java17
+      Architectures:
+        - x86_64
