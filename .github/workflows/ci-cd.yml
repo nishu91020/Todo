@@ -4,7 +4,7 @@ on:
     branches: [master]
 jobs:
   build-and-deploy:
-    runs-on: ubantu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Code Chenckout
         uses: actions/checkout@v3
