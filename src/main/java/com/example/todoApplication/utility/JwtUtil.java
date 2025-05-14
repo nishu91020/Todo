@@ -36,7 +36,7 @@ public class JwtUtil {
         System.out.println("extractionKey: " + extractionKey);
         System.out.println("Jwt token: " + token);
         try {
-            return Jwts.parserBuilder()
+            return Jwts.parser()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
@@ -57,7 +57,7 @@ public class JwtUtil {
 
     private boolean isTokenExpired(String token) {
         try {
-            return Jwts.parserBuilder()
+            return Jwts.parser()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
