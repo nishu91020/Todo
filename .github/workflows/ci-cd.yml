@@ -25,10 +25,10 @@ jobs:
         run: ls -l
       - name: Create AWS Lambda Function
         run: |
-          aws s3 cp ./todoApplication-0.0.1-SNAPSHOT.jar s3://my-lambda-bucket/lambda/todoApplication-0.0.1-SNAPSHOT.jar
+          aws s3 cp ./.github/workflows/todoApplication-0.0.1-SNAPSHOT.jar s3://my-lambda-bucket/lambda/todoApplication-0.0.1-SNAPSHOT.jar
           aws lambda create-function --function-name LambdaHandler --runtime java17 --handler com.example.todoApplication.LambdaHandler::handleRequest --role arn:aws:iam::975050363417:role/test-user-2 --s3-bucket my-lambda-bucket --s3-key lambda/todoApplication-0.0.1-SNAPSHOT.jar
         continue-on-error: true  
       - name: Update Lambda Function
         run: |
-          aws s3 cp ./todoApplication-0.0.1-SNAPSHOT.jar s3://my-lambda-bucket/lambda/todoApplication-0.0.1-SNAPSHOT.jar
+          aws s3 cp ./.github/workflows/todoApplication-0.0.1-SNAPSHOT.jar s3://my-lambda-bucket/lambda/todoApplication-0.0.1-SNAPSHOT.jar
           aws lambda update-function-code --function-name LambdaHandler --s3-bucket my-lambda-bucket --s3-key lambda/todoApplication-0.0.1-SNAPSHOT.jar
