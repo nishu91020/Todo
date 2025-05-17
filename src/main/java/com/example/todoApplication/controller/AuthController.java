@@ -27,4 +27,9 @@ public class AuthController {
     private ResponseEntity<String> loginUser(@RequestBody User user){
         return new ResponseEntity<>(authService.validateUser(user.getUsername(), user.getPassword()),HttpStatus.FOUND);
     }
+
+    @GetMapping("/test")
+    private ResponseEntity<String> test(){
+        return new ResponseEntity<>("successful integration",HttpStatus.FOUND);
+    }
 }
