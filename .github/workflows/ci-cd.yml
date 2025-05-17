@@ -34,4 +34,4 @@ jobs:
       - name: Update Lambda Function
         run: |
           aws s3 cp ./target/todoApplication-0.0.1-SNAPSHOT.jar s3://todo-lambda-bucket-11212/lambda/todoApplication-0.0.1-SNAPSHOT.jar
-          aws lambda update-function-code --function-name LambdaHandler --s3-bucket my-lambda-bucket --s3-key lambda/todoApplication-0.0.1-SNAPSHOT.jar
+          aws lambda update-function-code --function-name LambdaHandler --s3-bucket todo-lambda-bucket-11212 --s3-key lambda/todoApplication-0.0.1-SNAPSHOT.jar
