@@ -28,7 +28,7 @@ jobs:
             --function-name LambdaHandler \
             --runtime java17 \
             --handler com.example.todoApplication.LambdaHandler::handleRequest \
-            --role arn:aws:iam::975050363417:role/test-user-2 \
+            --role arn:aws:iam::975050363417:user/test-user-2 \
             --code S3Bucket=todo-lambda-bucket-11212,S3Key=lambda/todoApplication-0.0.1-SNAPSHOT.jar
         continue-on-error: true  
       - name: Update Lambda Function
