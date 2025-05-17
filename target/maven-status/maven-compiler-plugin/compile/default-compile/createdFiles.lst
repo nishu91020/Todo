@@ -1,0 +1,16 @@
+com\example\todoApplication\config\MongoConfig.class
+com\example\todoApplication\utility\JwtUtil.class
+com\example\todoApplication\model\User.class
+com\example\todoApplication\filter\JwtAuthenticationFilter.class
+com\example\todoApplication\controller\AuthController.class
+com\example\todoApplication\controller\TaskController.class
+com\example\todoApplication\LambdaHandler.class
+com\example\todoApplication\model\Task.class
+com\example\todoApplication\TodoApplication.class
+com\example\todoApplication\service\TaskService.class
+com\example\todoApplication\controller\TaskController$1.class
+com\example\todoApplication\service\CustomUserDetailsService.class
+com\example\todoApplication\repository\AuthRepository.class
+com\example\todoApplication\config\SecurityConfigTodo.class
+com\example\todoApplication\service\AuthService.class
+com\example\todoApplication\repository\TaskRepository.class
