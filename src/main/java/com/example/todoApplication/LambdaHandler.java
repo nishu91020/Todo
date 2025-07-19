@@ -32,6 +32,7 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
             String queryString = input.getQueryStringParameters() != null ? input.getQueryStringParameters().toString() : "";
             String pathParameters = input.getPathParameters() != null ? input.getPathParameters().toString() : "";
 
+            logger.info("received request for %s method %s body %s",  path, method, body);
             if("/auth/login".equals(path))
             {
                 logger.info("Login request received");
