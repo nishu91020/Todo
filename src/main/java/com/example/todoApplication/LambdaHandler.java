@@ -33,10 +33,7 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
         String pathParameters = input.getPathParameters() != null ? input.getPathParameters().toString() : "";
 
         logger.info("received request for {} method {} body {}", path, method, body);
-        {
-            logger.info("Login request received");
-
-        }
+        
         String output = String.format("{ \"message\": \"hello world nishu\"}");
 
         return response
