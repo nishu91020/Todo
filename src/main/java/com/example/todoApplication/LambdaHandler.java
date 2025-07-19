@@ -43,7 +43,7 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
             logger.error("Error processing request: " + e.getMessage());
             response.withStatusCode(500).withBody("{\"error\": \"Internal Server Error\"}");
         }
-            String output = String.format("{ \"message\": \"hello world\"}");
+            String output = String.format("{ \"message\": \"hello world nishu\"}");
 
             return response
                     .withStatusCode(200)
