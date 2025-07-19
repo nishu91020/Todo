@@ -25,11 +25,13 @@ Resources:
         AuthApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /auth/{proxy+}
             Method: ANY
         TaskApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /task/{proxy+}
             Method: ANY
     MyApi:
