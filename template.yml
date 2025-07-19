@@ -22,11 +22,6 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /{proxy+}
-            Method: ANY
         AuthApi:
           Type: Api
           Properties:
