@@ -25,29 +25,24 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        try{
-            String path = input.getPath();
-            String method = input.getHttpMethod();
-            String body = input.getBody();
-            String queryString = input.getQueryStringParameters() != null ? input.getQueryStringParameters().toString() : "";
-            String pathParameters = input.getPathParameters() != null ? input.getPathParameters().toString() : "";
 
-            logger.info("received request for %s method %s body %s",  path, method, body);
-            if("/auth/login".equals(path))
-            {
-                logger.info("Login request received");
+        String path = input.getPath();
+        String method = input.getHttpMethod();
+        String body = input.getBody();
+        String queryString = input.getQueryStringParameters() != null ? input.getQueryStringParameters().toString() : "";
+        String pathParameters = input.getPathParameters() != null ? input.getPathParameters().toString() : "";
 
-            }
+        logger.info("received request for %s method %s body %s",  path, method, body);
+        if("/auth/login".equals(path))
+        {
+            logger.info("Login request received");
+
         }
-        catch (Exception e) {
-            logger.error("Error processing request: " + e.getMessage());
-            response.withStatusCode(500).withBody("{\"error\": \"Internal Server Error\"}");
-        }
-            String output = String.format("{ \"message\": \"hello world nishu\"}");
+        String output = String.format("{ \"message\": \"hello world nishu\"}");
 
-            return response
-                    .withStatusCode(200)
-                    .withBody(output);
+        return response
+                .withStatusCode(200)
+                .withBody(output);
 
     }
 }
