@@ -34,6 +34,7 @@ public class AuthService {
         if (authRepository.findByUsername(user.getUsername()).isPresent()) {
             return "User already exists!";
         }
+        
         User newUser = new User();
         UUID randomUUID = UUID.randomUUID();
 
