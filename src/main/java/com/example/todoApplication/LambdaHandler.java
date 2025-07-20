@@ -31,12 +31,15 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
         String path = input.getPath();
         String method = input.getHttpMethod();
         User body = null;
-        try {
-            com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-            body = objectMapper.readValue(input.getBody(), User.class);
-        } catch (Exception e) {
-            logger.error("Failed to parse request body to User", e);
-            return response.withStatusCode(400).withBody("{\"error\":\"Invalid request body\"}");
+        if ("POST".equalsIgnoreCase(method) || "PUT".equalsIgnoreCase(method) || "PATCH".equalsIgnoreCase(method)) {
+            
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                body = objectMapper.readValue(input.getBody(), User.class);
+            } catch (Exception e) {
+                logger.error("Failed to parse request body to User", e);
+                return response.withStatusCode(400).withBody("{\"error\":\"Invalid request body\"}");
+            }
         }
         String queryString = input.getQueryStringParameters() != null ? input.getQueryStringParameters().toString() : "";
         String pathParameters = input.getPathParameters() != null ? input.getPathParameters().toString() : "";
@@ -44,10 +47,10 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
         logger.info("received request for {} method {} body {}", path, method, body);
         
         AuthService authService = new AuthService();
-        if(path.contains("/auth/signup")) {
+        if(path.contains("/auth/signup") && "POST".equalsIgnoreCase(method)) {
             return response.withBody(authService.signup(body))
                            .withStatusCode(201);
-        } else if(path.contains("/auth/login")) {
+        } else if(path.contains("/auth/login") && "POST".equalsIgnoreCase(method)) {
             return response.withBody(authService.validateUser(body.getUsername(), body.getPassword()))
                            .withStatusCode(201);
         } else {
