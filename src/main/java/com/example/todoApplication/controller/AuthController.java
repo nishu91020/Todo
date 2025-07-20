@@ -38,6 +38,8 @@ public class AuthController {
         String method = input.getHttpMethod();
         String body = input.getBody();
 
+        logger.info("AuthController received path: {} method: {}", path, method);
+
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
