@@ -1,12 +1,20 @@
 package com.example.todoApplication.controller;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.example.todoApplication.model.User;
 import com.example.todoApplication.service.AuthService;
 import com.example.todoApplication.utility.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.amazonaws.services.lambda.runtime.Context;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -16,6 +24,53 @@ public class AuthController {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    public AuthController() {
+       this.authService = new AuthService();
+    }
+
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+        String path = input.getPath();
+        String method = input.getHttpMethod();
+        String body = input.getBody();
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            if ("/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
+                User user = mapper.readValue(body, User.class);
+                String result = authService.signup(user);
+                return new APIGatewayProxyResponseEvent()
+                        .withHeaders(headers)
+                        .withStatusCode(201)
+                        .withBody(result);
+            } else if ("/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
+                User user = mapper.readValue(body, User.class);
+                String result = authService.validateUser(user.getUsername(), user.getPassword());
+                return new APIGatewayProxyResponseEvent()
+                        .withHeaders(headers)
+                        .withStatusCode(200)
+                        .withBody(result);
+            } else if ("/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
+                return new APIGatewayProxyResponseEvent()
+                        .withHeaders(headers)
+                        .withStatusCode(200)
+                        .withBody("successful integration");
+            } else {
+                return new APIGatewayProxyResponseEvent()
+                        .withHeaders(headers)
+                        .withStatusCode(404)
+                        .withBody("{\"error\":\"Not Found\"}");
+            }
+        } catch (Exception e) {
+            return new APIGatewayProxyResponseEvent()
+                    .withHeaders(headers)
+                    .withStatusCode(500)
+                    .withBody("{\"error\":\"Internal Server Error\"}");
+        }
+    }
 
     @PostMapping("/signup")
     private ResponseEntity<String> signupUser(@RequestBody User user){ //signup
