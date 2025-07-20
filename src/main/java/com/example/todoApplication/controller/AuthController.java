@@ -2,6 +2,7 @@ package com.example.todoApplication.controller;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.example.todoApplication.LambdaHandler;
 import com.example.todoApplication.model.User;
 import com.example.todoApplication.service.AuthService;
 import com.example.todoApplication.utility.JwtUtil;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
+
     public AuthController() {
        this.authService = new AuthService();
     }
@@ -39,21 +43,24 @@ public class AuthController {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            if ("/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
+            if ("/LambdaHandler/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
+                logger.info("Signing up user with body: {}", body);
                 User user = mapper.readValue(body, User.class);
                 String result = authService.signup(user);
                 return new APIGatewayProxyResponseEvent()
                         .withHeaders(headers)
                         .withStatusCode(201)
                         .withBody(result);
-            } else if ("/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
+            } else if ("/LambdaHandler/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
+                logger.info("Logging in user with body: {}", body);
                 User user = mapper.readValue(body, User.class);
                 String result = authService.validateUser(user.getUsername(), user.getPassword());
                 return new APIGatewayProxyResponseEvent()
                         .withHeaders(headers)
                         .withStatusCode(200)
                         .withBody(result);
-            } else if ("/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
+            } else if ("/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
+                logger.info("Testing integration");
                 return new APIGatewayProxyResponseEvent()
                         .withHeaders(headers)
                         .withStatusCode(200)
