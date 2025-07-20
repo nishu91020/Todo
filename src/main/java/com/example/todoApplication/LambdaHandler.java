@@ -29,8 +29,8 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
         String body = input.getBody() != null ? input.getBody() : "";
 
         logger.info("received request for {} method {} body {}", path, method, body);
-        
-        if (path.startsWith("/auth")) {
+
+        if (path.startsWith("/LambdaHandler/auth")) {
             AuthController authHandler = new AuthController();
             return authHandler.handleRequest(input, context);
         } else {
