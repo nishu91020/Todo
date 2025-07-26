@@ -39,7 +39,7 @@ public class AuthController {
 
         logger.info("AuthController received path: {} method: {}", path, method);
 
-        ObjectMapper mapper = new ObjectMapper();
+        
         if ("/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
             logger.info("Testing integration");
             return new APIGatewayProxyResponseEvent()
@@ -49,6 +49,7 @@ public class AuthController {
         if ("/LambdaHandler/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
             logger.info("Signing up user with body: {}", body);
             try {
+                ObjectMapper mapper = new ObjectMapper();
                 User user = mapper.readValue(body, User.class);
                 String result = authService.signup(user);
                 return new APIGatewayProxyResponseEvent()
@@ -65,6 +66,7 @@ public class AuthController {
         if ("/LambdaHandler/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
             logger.info("Logging in user with body: {}", body);
             try {
+                ObjectMapper mapper = new ObjectMapper();
                 User user = mapper.readValue(body, User.class);
                 String result = authService.validateUser(user.getUsername(), user.getPassword());
                 return new APIGatewayProxyResponseEvent()
