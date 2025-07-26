@@ -40,6 +40,12 @@ public class AuthController {
         logger.info("AuthController received path: {} method: {}", path, method);
 
         ObjectMapper mapper = new ObjectMapper();
+        if ("/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
+            logger.info("Testing integration");
+            return new APIGatewayProxyResponseEvent()
+                    .withStatusCode(200)
+                    .withBody("successful integration");
+        }
         if ("/LambdaHandler/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
             logger.info("Signing up user with body: {}", body);
             try {
@@ -55,7 +61,8 @@ public class AuthController {
                         .withBody("{\"error\":\"Internal Server Error\"}");
             }
 
-        } else if ("/LambdaHandler/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
+        } 
+        if ("/LambdaHandler/auth/login".equals(path) && "POST".equalsIgnoreCase(method)) {
             logger.info("Logging in user with body: {}", body);
             try {
                 User user = mapper.readValue(body, User.class);
@@ -70,11 +77,6 @@ public class AuthController {
                         .withBody("{\"error\":\"Internal Server Error\"}");
             }
 
-        } else if ("/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
-            logger.info("Testing integration");
-            return new APIGatewayProxyResponseEvent()
-                    .withStatusCode(200)
-                    .withBody("successful integration");
         } else {
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(404)
