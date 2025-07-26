@@ -41,17 +41,18 @@ public class AuthController {
         logger.info("AuthController received path: {} method: {}", path, method);
         logger.info("is request to test path {}","/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method));
 
-        HashMap<String, String> headers = new HashMap<>();
-            headers.put("Content-Type", "application/json");
-            ObjectMapper mapper = new ObjectMapper();
-        if ("/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method)) {
+        Boolean isTestPath = "/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method);        
+        if (isTestPath) {
                 logger.info("Testing integration");
                 return new APIGatewayProxyResponseEvent()
-                        .withHeaders(headers)
                         .withStatusCode(200)
                         .withBody("successful integration");
             }
         try {
+
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            ObjectMapper mapper = new ObjectMapper();
             if ("/LambdaHandler/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
                 logger.info("Signing up user with body: {}", body);
                 User user = mapper.readValue(body, User.class);
