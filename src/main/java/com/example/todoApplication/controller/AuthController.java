@@ -39,7 +39,8 @@ public class AuthController {
         String body = input.getBody();
 
         logger.info("AuthController received path: {} method: {}", path, method);
-
+        logger.info("is request to test path {}","/LambdaHandler/auth/test".equals(path) && "GET".equalsIgnoreCase(method));
+        
         try {
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
