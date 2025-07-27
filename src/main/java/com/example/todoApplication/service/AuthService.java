@@ -1,6 +1,6 @@
 package com.example.todoApplication.service;
 
-import com.example.todoApplication.model.Task;
+import com.amazonaws.services.lambda.runtime.Context;
 import com.example.todoApplication.model.User;
 import com.example.todoApplication.repository.AuthRepository;
 import com.example.todoApplication.utility.JwtUtil;
@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,7 +28,7 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String signup(User user){
+    public String signup(User user, Context context) {
         if (authRepository.findByUsername(user.getUsername()).isPresent()) {
             return "User already exists!";
         }

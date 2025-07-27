@@ -53,7 +53,8 @@ public class AuthController {
             try {
                 Gson gson = new Gson();
                  User user = gson.fromJson(body, User.class);
-                String result = authService.signup(user);
+                 logger.info("Context {}", context);
+                String result = authService.signup(user, context);
                 return new APIGatewayProxyResponseEvent()
                         .withStatusCode(201)
                         .withBody(result);
