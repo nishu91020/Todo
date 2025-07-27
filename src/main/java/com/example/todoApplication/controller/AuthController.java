@@ -89,11 +89,11 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signup")
-    private ResponseEntity<String> signupUser(@RequestBody User user) { // signup
-        System.out.println("Signing up user!!");
-        return new ResponseEntity<>(authService.signup(user), HttpStatus.CREATED);
-    }
+//    @PostMapping("/signup")
+//    private ResponseEntity<String> signupUser(@RequestBody User user) { // signup
+//        System.out.println("Signing up user!!");
+//        return new ResponseEntity<>(authService.signup(user), HttpStatus.CREATED);
+//    }
 
     @PostMapping("/login")
     private ResponseEntity<String> loginUser(@RequestBody User user) {
