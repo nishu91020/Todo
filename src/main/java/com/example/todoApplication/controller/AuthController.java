@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 
+import com.google.gson.Gson;
+import org.bson.json.JsonObject;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,8 +51,8 @@ public class AuthController {
         if ("/LambdaHandler/auth/signup".equals(path) && "POST".equalsIgnoreCase(method)) {
             logger.info("Signing up user with body: {}", body);
             try {
-                ObjectMapper mapper = new ObjectMapper();
-                User user = mapper.readValue(body, User.class);
+                Gson gson = new Gson();
+                 User user = gson.fromJson(body, User.class);
                 String result = authService.signup(user);
                 return new APIGatewayProxyResponseEvent()
                         .withStatusCode(201)
